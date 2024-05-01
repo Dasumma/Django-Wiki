@@ -1,0 +1,59 @@
+{% extends "../base_generic.html" %}
+
+{% load index %}
+{% block content %}
+  <h2><strong>Topic List</strong></h2>
+  {% if all_cols.0 %}
+    <ul>
+      <table class="table">
+        <tbody>
+          {% for i in length %}
+          <tr>
+            {% if i < lens.0 %}
+            {% with top=all_cols.0|index:i %}
+            <td>
+              <a href="{% url 'entry-detail' top.pk %}">{{ top }}</a>
+            </td>
+            {% endwith %}
+            {% else %}
+            <td></td>
+            {% endif %}
+      
+            {% if i < lens.1 %}
+            {% with top=all_cols.1|index:i %}
+            <td>
+              <a href="{% url 'entry-detail' top.pk %}">{{ top }}</a>
+            </td>
+            {% endwith %}
+            {% else %}
+            <td></td>
+            {% endif %}
+
+            {% if i < lens.2 %}
+            {% with top=all_cols.2|index:i %}
+            <td>
+              <a href="{% url 'entry-detail' top.pk %}">{{ top }}</a>
+            </td>
+            {% endwith %}
+            {% else %}
+            <td></td>
+            {% endif %}
+      
+            {% if i < lens.3 %}
+            {% with top=all_cols.3|index:i %}
+            <td>
+              <a href="{% url 'entry-detail' top.pk %}">{{ top }}</a>
+            </td>
+            {% endwith %}
+            {% else %}
+            <td></td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+        <tbody>
+      </table>
+    </ul>
+  {% else %}
+    <p>There are no topics in the Wiki.</p>
+  {% endif %}
+{% endblock %}

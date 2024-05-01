@@ -1,0 +1,54 @@
+{% extends "base_generic.html" %}
+
+{% load index %}
+{{ all_facilities|index:x }}
+{{ all_info_types|index:x }}
+{% block content %}
+  <h2>IT Knowledge Base</h2>
+  <p>
+    Welcome To The Enjet Aero IT Knowledge Base, a website developed by
+    <em>The Enjet Aero IT Team</em>!
+  </p>
+    
+  
+  <ul>
+    <strong># Entries:</strong> {{ num_entries }}
+  </ul>
+
+  <br>
+  <div class="col mx-auto">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Facilities</th>
+          <th scope="col">Info Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in larger_count %}
+        <tr>
+          {% if i < num_facilities %}
+          {% with facility=all_facilities|index:i %}
+          <td>
+            <a href="{% url 'facility-detail' facility.pk %}">{{ facility }}</a>
+          </td>
+          {% endwith %}
+          {% else %}
+          <td></td>
+          {% endif %}
+  
+          {% if i < num_info_types %}
+          {% with info_type=all_info_types|index:i %}
+          <td>
+            <a href="{% url 'infotype-detail' info_type.pk %}">{{ info_type }}</a>
+          </td>
+          {% endwith %}
+          {% else %}
+          <td></td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

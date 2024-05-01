@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head> 
+        {% block title %}
+          <title>IT Wiki</title>
+        {% endblock %}
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!---->
+        {% load bootstrap5 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+        {% load static %}
+        <script src="{% static 'js/script.js' %}" ></script>
+        <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+        <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+      </head>
+      <body>
+        <div class="jumbotron">
+            <h2>Edit Toner Type</h2>
+            <p class="lead">{{toner}}</p>
+            <hr class="sidebar-divider">
+            <form id="form" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.media }}
+                {{ form.as_p }}
+                <div class="form-group">
+                    <button type="submit" value="Save" class="btn btn-primary" >Upload</button>
+                </div>
+            </form>
+        </div>
+        <script type="text/javascript"> 
+            $(document).on('submit','#form',function(e){ 
+                e.preventDefault(); 
+                $.ajax({ 
+                    type:'POST', 
+                    url:'{% url "edit-toner" primary_key %}', 
+                    data: 
+                    { 
+                        black:$("#id_black").val(), 
+                        cyan:$("#id_cyan").val(), 
+                        yellow:$("#id_yellow").val(), 
+                        magenta:$("#id_magenta").val(), 
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val() 
+                    }, 
+                    success:function(){ 
+                        window.close();
+                    } 
+                }) 
+            }); 
+            window.onload = submitFormsWithCtrlEnter()
+        </script>
+    </body> 
+</html>

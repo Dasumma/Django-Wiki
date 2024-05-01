@@ -1,0 +1,12 @@
+django
+django-easy-pdf
+WeasyPrint
+django-auth-ldap
+python-ldap
+django-axes
+docx2pdf
+django-ckeditor
+psycopg2-binary
+pyasn1 == 0.4.8
+pysnmp
+python-dotenv == 1.0.1

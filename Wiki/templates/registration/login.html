@@ -1,0 +1,44 @@
+{% extends "../base_generic.html" %}
+{% block content %}
+<br/>
+<br/>
+<br/>
+<div class="d-flex justify-content-center">
+  <div id="loginbox" class="align-self-center">
+  <h2><strong>LDAP Signin...</strong></h2>
+
+  </br>
+  {% if form.errors %}
+  <p>Your username and password didn't match. Please try again.</p>
+  {% endif %}
+
+  {% if next %}
+      {% if user.is_authenticated %}
+      <p>Your account doesn't have access to this page. To proceed,
+      please login with an account that has access.</p>
+      {% else %}
+      <p>Please login to see this page.</p>
+      {% endif %}
+  {% endif %}
+  <div id="editable"></div>
+
+  </br>
+
+  <form method="post"> 
+      {% csrf_token %}
+      <div class="mb-3">
+        <input type="text" class="form-control text-box" name="username" placeholder="Username">
+      </div>
+      <div class="mb-3">
+        <input type="password" class="form-control text-box" name="password" placeholder="Password">
+      </div>
+      </br>  
+      <button type="submit" class="w-100 btn btn-primary submit_login">Submit</button>
+  </form>
+</div>
+</div>
+<script>
+  window.onload = getURLParams();
+</script>
+
+{% endblock %}

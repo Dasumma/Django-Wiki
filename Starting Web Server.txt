@@ -1,0 +1,76 @@
+Starting Web Server:
+Goal: Build a website to be used for Enjet Aero's IT Knowledge Base
+##Needs:
+##--Authentication system so that only specific people can reach sensitive information and to allow for more than one user group.
+##--Storage system that will hold all the documents and be searchable by the website.
+
+https://www.lfd.uci.edu/~gohlke/pythonlibs/
+
+install python3 and pip
+install workon (not needed)
+pip install django
+pip install django-easy-pdf
+pip install WeasyPrint
+pip install django-auth-ldap
+pip install python-ldap
+pip install django-axes
+pip install docx2pdf
+pip install django-ckeditor
+pip install psycopg2-binary
+pip install "pyasn1==0.4.8"
+pip install pysnmp
+
+creating a project:
+
+django-admin startproject "project-name"
+cd "project-name"
+python manage.py runserver
+
+
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver
+
+
+from django.contrib.auth.models import Users
+user = User.objects.create_user("firstname", "email", "password")
+
+user.last_name = "lastname"
+user.save()
+
+
+Database Organization
+
+Item Entry [
+	Topic: {Topic of the file}
+	Author: {User that posted the information}
+	Facility: {OP, Terre Haute, New Britain, etc.}
+	InfoType: {General, Software, Network, Security, Machines}
+	Date Posted: {date/time}
+	Date Edited: {date/time}
+	Group: {Helpdesk, System Admin, ERP, ERP Helpdesk}
+	Department: {IT,ERP,ETC.}
+	Link To File: {url}
+	Keywords: [{key1},{key2},{key3}]
+]
+
+
+Upload docx file to website along with item entry information above
+
+Search feature to search the documents and keywords
+Advanced search feature that searchs all text in all documents
+
+
+1. Create boilerplate website with a login
+	a. Create django webserver
+	b. Create login page using the default django authentication system (https://docs.djangoproject.com/en/4.2/topics/auth/default/)
+2. Create Database with the above template
+3. Create posting feature with an rtf plugin
+4. Create feature that allows replacing rtf with a docx upload
+5. Create search feature
+6. Create advanced search feature
+
+
+
+TODO:
+Comment out catalog/models.py

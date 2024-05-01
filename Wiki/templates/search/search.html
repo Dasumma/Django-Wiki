@@ -1,0 +1,65 @@
+{% extends "../base_generic.html" %}
+
+{% load index %}
+{% block content %} 
+  <h1><strong>Results: </strong></h1>
+  <form class="d-flex" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.media }}
+    {{ form.as_p }}
+    <div class="form-group">
+        <button type="search" value="search" class="btn btn-outline-success">Search</button>
+    </div>
+  </form>
+  {% if all_cols.0 %}
+    <ul>
+      <table class="table">
+      {% for i in length %}
+      <tr>
+        {% if i < lens.0 %}
+        {% with top=all_cols.0|index:i %}
+        <td>
+          <a href="{% url 'entry-detail' top.pk %}">{{ top }}</a>
+        </td>
+        {% endwith %}
+        {% else %}
+        <td></td>
+        {% endif %}
+  
+        {% if i < lens.1 %}
+        {% with top=all_cols.1|index:i %}
+        <td>
+          <a href="{% url 'entry-detail' top.pk %}">{{ top }}</a>
+        </td>
+        {% endwith %}
+        {% else %}
+        <td></td>
+        {% endif %}
+
+        {% if i < lens.2 %}
+        {% with top=all_cols.2|index:i %}
+        <td>
+          <a href="{% url 'entry-detail' top.pk %}">{{ top }}</a>
+        </td>
+        {% endwith %}
+        {% else %}
+        <td></td>
+        {% endif %}
+  
+        {% if i < lens.3 %}
+        {% with top=all_cols.3|index:i %}
+        <td>
+          <a href="{% url 'entry-detail' top.pk %}">{{ top }}</a>
+        </td>
+        {% endwith %}
+        {% else %}
+        <td></td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </table>
+    </ul>
+  {% else %}
+    <p>No entries matched your search terms.</p>
+  {% endif %}
+{% endblock %}

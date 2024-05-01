@@ -1,0 +1,27 @@
+{% extends "../base_generic.html" %}
+{% block content %}
+    <div class="jumbotron">
+        <h2>{{title}}</h2>
+        <p class="lead">{{helper}}</p>
+        <hr class="sidebar-divider">
+        <form id="form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.media }}
+            {{ form.as_p }}
+            <div class="form-group">
+                <button type="submit" value="Save" class="btn btn-primary">
+                    {% if isNew %}
+                    Upload
+                    {% else %}
+                    Save
+                    {% endif %}
+                </button>
+                {% if isNew == False%}
+                <a class="btn btn-primary" href="http://127.0.0.1:8000/admin/Wiki/entry/{{entry}}/delete/?next=/">Delete</a>
+                {% endif %}
+        </form>
+    </div>
+    <script>
+        window.onload = submitFormsWithCtrlEnter()
+    </script>
+{% endblock %}

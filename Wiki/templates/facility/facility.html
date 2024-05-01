@@ -1,0 +1,58 @@
+{% extends "../base_generic.html" %}
+
+{% load index %}
+{% block content %}
+  <h2><strong>Facility List</strong></h2>
+
+  {% if all_cols.0 %}
+    <ul>
+      <table class="table">
+      {% for i in length %}
+      <tr>
+        {% if i < lens.0 %}
+        {% with top=all_cols.0|index:i %}
+        <td>
+          <a href="{{ top.get_absolute_url }}">{{ top }}</a>
+        </td>
+        {% endwith %}
+        {% else %}
+        <td></td>
+        {% endif %}
+  
+        {% if i < lens.1 %}
+        {% with top=all_cols.1|index:i %}
+        <td>
+          <a href="{{ top.get_absolute_url }}">{{ top }}</a>
+        </td>
+        {% endwith %}
+        {% else %}
+        <td></td>
+        {% endif %}
+
+        {% if i < lens.2 %}
+        {% with top=all_cols.2|index:i %}
+        <td>
+          <a href="{{ top.get_absolute_url }}">{{ top }}</a>
+        </td>
+        {% endwith %}
+        {% else %}
+        <td></td>
+        {% endif %}
+  
+        {% if i < lens.3 %}
+        {% with top=all_cols.3|index:i %}
+        <td>
+          <a href="{{ top.get_absolute_url }}">{{ top }}</a>
+        </td>
+        {% endwith %}
+        {% else %}
+        <td></td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </table>
+    </ul>
+  {% else %}
+    <p>There are no facilities in the Wiki.</p>
+  {% endif %}
+{% endblock %}
