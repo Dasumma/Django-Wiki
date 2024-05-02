@@ -1,8 +1,11 @@
-django
+django-bootstrap-v5
+asgiref 
+sqlparse
+tzdata
 django-easy-pdf
 WeasyPrint
+python_ldap-3.4.0-cp311-cp311-win_amd64.whl
 django-auth-ldap
-python-ldap
 django-axes
 docx2pdf
 django-ckeditor
