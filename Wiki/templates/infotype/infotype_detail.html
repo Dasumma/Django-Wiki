@@ -3,13 +3,13 @@
 {% load index %}
 {% block content %}
   <h2><strong>Topic List: {{infotype.name}}</strong></h2>
-  {% if col1 %}
+  {% if all_cols.0 %}
     <ul>
       <table class="table">
       {% for i in length %}
       <tr>
         {% if i < lens.0 %}
-        {% with top=col1|index:i %}
+        {% with top=all_cols.0|index:i %}
         <td>
           <a href="{% url 'entry-detail' top.pk %}">{{ top }}</a>
         </td>
@@ -19,7 +19,7 @@
         {% endif %}
   
         {% if i < lens.1 %}
-        {% with top=col2|index:i %}
+        {% with top=all_cols.1|index:i %}
         <td>
           <a href="{% url 'entry-detail' top.pk %}">{{ top }}</a>
         </td>
@@ -29,7 +29,7 @@
         {% endif %}
 
         {% if i < lens.2 %}
-        {% with top=col3|index:i %}
+        {% with top=all_cols.2|index:i %}
         <td>
           <a href="{% url 'entry-detail' top.pk %}">{{ top }}</a>
         </td>
@@ -39,7 +39,7 @@
         {% endif %}
   
         {% if i < lens.3 %}
-        {% with top=col4|index:i %}
+        {% with top=all_cols.3|index:i %}
         <td>
           <a href="{% url 'entry-detail' top.pk %}">{{ top }}</a>
         </td>

@@ -111,6 +111,8 @@ class Entry(models.Model):
 
     keywords = models.ManyToManyField('Keyword', blank=True, help_text='Enter keywords with a comma separation.')
 
+    impressions = models.IntegerField("Impression", default=0)
+
     def get_absolute_url(self):
         return reverse('entry-detail', args=[str(self.id)])
 

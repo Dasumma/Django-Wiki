@@ -16,9 +16,6 @@ from .models import Entry, Team, Facility, InfoType, Document, Keyword, Printer,
 from EnjetITWiki.settings import MEDIA_ROOT, STATIC_URL
 
 
-
-# Create your views here.
-
 def home(request):
     """View Function for home page of site."""
     num_entries = Entry.objects.all().count()
@@ -26,6 +23,9 @@ def home(request):
     all_info_types = InfoType.objects.all()
     num_facilities = Facility.objects.all().count()
     num_info_types = InfoType.objects.all().count()
+
+    pop_entries = Entry.objects.all().order_by("impressions").reverse()
+
     if(num_facilities > num_info_types):
         larger_count = num_facilities
     else:
@@ -37,13 +37,16 @@ def home(request):
         'all_info_types': all_info_types,
         'larger_count': larger_count,
         'num_facilities': num_facilities,
-        'num_info_types': num_info_types
+        'num_info_types': num_info_types,
+        'pop_entries':pop_entries
     }
     return render(request, 'home.html', context=context)
 
 @permission_required("Wiki.view_entry")
 def entry_detail_view(request, primary_key):
     entry = get_object_or_404(Entry, pk = primary_key)
+    entry.impressions =+ 1
+    entry.save()
     document_pk = None
     if(entry.document != None):
         document_pk = entry.document.pk
@@ -61,43 +64,19 @@ def entry_detail_view(request, primary_key):
 def facility_detail_view(request, primary_key):
     facility = get_object_or_404(Facility, pk = primary_key)
     entry_list = facility.entry_set.all()
-    col1 = []
-    col2 = []
-    col3 = []
-    col4 = []
-    for i in range(entry_list.count()):
-        if (i % 4) == 0:
-            col1.append(entry_list[i])
-        if (i % 4) == 1:
-            col2.append(entry_list[i])
-        if (i % 4) == 2:
-            col3.append(entry_list[i])
-        if (i % 4) == 3:
-            col4.append(entry_list[i])
-    length = range(0, len(col1))
-    lens = [len(col1), len(col2), len(col3), len(col4)]
-    return render(request, 'facility/facility_detail.html', context={'col1':col1, 'col2':col2, 'col3':col3, 'col4':col4, 'length':length, 'lens':lens, 'facility':facility})
+    all_cols = list(chunks(entry_list))
+    length = range(0, len(all_cols[0]))
+    lens = [len(all_cols[0]),len(all_cols[1]),len(all_cols[2]),len(all_cols[3])]
+    return render(request, 'facility/facility_detail.html', context={'all_cols':all_cols, 'length':length, 'lens':lens, 'facility':facility})
 
 @permission_required("Wiki.authenticated")
 def infotype_detail_view(request, primary_key):    
     infotype = get_object_or_404(InfoType, pk = primary_key)
-    entry_list = infotype.entry_set.all();
-    col1 = []
-    col2 = []
-    col3 = []
-    col4 = []
-    for i in range(entry_list.count()):
-        if (i % 4) == 0:
-            col1.append(entry_list[i])
-        if (i % 4) == 1:
-            col2.append(entry_list[i])
-        if (i % 4) == 2:
-            col3.append(entry_list[i])
-        if (i % 4) == 3:
-            col4.append(entry_list[i])
-    length = range(0, len(col1))
-    lens = [len(col1), len(col2), len(col3), len(col4)]
-    return render(request, 'infotype/infotype_detail.html', context={'col1':col1, 'col2':col2, 'col3':col3, 'col4':col4, 'length':length, 'lens':lens, 'infotype':infotype})
+    entry_list = infotype.entry_set.all()
+    all_cols = list(chunks(entry_list))
+    length = range(0, len(all_cols[0]))
+    lens = [len(all_cols[0]),len(all_cols[1]),len(all_cols[2]),len(all_cols[3])]
+    return render(request, 'infotype/infotype_detail.html', context={'all_cols':all_cols, 'length':length, 'lens':lens, 'infotype':infotype})
 
 @permission_required("Wiki.authenticated")
 def team_detail_view(request, primary_key):
