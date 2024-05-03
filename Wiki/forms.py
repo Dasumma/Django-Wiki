@@ -29,9 +29,13 @@ class SearchForm(forms.Form):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control me-2 form-dan'
             self.fields['facility'].widget.attrs['placeholder'] = 'Facility'
+            self.fields['facility'].widget.attrs['title'] = 'Facility'
             self.fields['infoType'].widget.attrs['placeholder'] = 'InfoType'
+            self.fields['infoType'].widget.attrs['title'] = 'InfoType'
             self.fields['team'].widget.attrs['placeholder'] = 'Team'
+            self.fields['team'].widget.attrs['title'] = 'Team'
             self.fields['search'].widget.attrs['placeholder'] = 'Search'
+            self.fields['search'].widget.attrs['search'] = 'Search'
             self.fields['advSearch'].widget.attrs['placeholder'] = 'advSearch'
             self.fields['advSearch'].widget.attrs['class'] = 'form-check-input form-dan'
 

@@ -19,26 +19,14 @@ from EnjetITWiki.settings import MEDIA_ROOT, STATIC_URL
 def home(request):
     """View Function for home page of site."""
     num_entries = Entry.objects.all().count()
-    all_facilities = Facility.objects.all()
-    all_info_types = InfoType.objects.all()
-    num_facilities = Facility.objects.all().count()
-    num_info_types = InfoType.objects.all().count()
+    
+    faq_entries = Entry.objects.all().order_by("impressions").reverse()
+    faq_range = range(0,15)
 
-    pop_entries = Entry.objects.all().order_by("impressions").reverse()
-
-    if(num_facilities > num_info_types):
-        larger_count = num_facilities
-    else:
-        larger_count = num_info_types
-    larger_count = range(0,larger_count)
     context = {
         'num_entries': num_entries,
-        'all_facilities': all_facilities,
-        'all_info_types': all_info_types,
-        'larger_count': larger_count,
-        'num_facilities': num_facilities,
-        'num_info_types': num_info_types,
-        'pop_entries':pop_entries
+        'faq_range': faq_range,
+        'faq_entries':faq_entries
     }
     return render(request, 'home.html', context=context)
 
@@ -80,8 +68,12 @@ def infotype_detail_view(request, primary_key):
 
 @permission_required("Wiki.authenticated")
 def team_detail_view(request, primary_key):
-    team = get_object_or_404(InfoType, pk = primary_key)
-    return render(request, 'department/department_detail.html', context={'team': team})
+    team = get_object_or_404(Team, pk = primary_key)
+    entry_list = team.entry_set.all()
+    all_cols = list(chunks(entry_list))
+    length = range(0, len(all_cols[0]))
+    lens = [len(all_cols[0]),len(all_cols[1]),len(all_cols[2]),len(all_cols[3])]
+    return render(request, 'team/team_detail.html', context={'all_cols':all_cols, 'length':length, 'lens':lens, 'team':team})
 
 @permission_required("Wiki.authenticated")
 def entry_list_view(request):
@@ -95,7 +87,7 @@ def entry_list_view(request):
     all_cols = list(chunks(entry_list))
     length = range(0, len(all_cols[0]))
     lens = [len(all_cols[0]),len(all_cols[1]),len(all_cols[2]),len(all_cols[3])]
-    return render(request, 'entry/entry.html', context={'all_cols':all_cols, 'length':length, 'lens':lens})
+    return render(request, 'entry/entry_list.html', context={'all_cols':all_cols, 'length':length, 'lens':lens})
 
 @permission_required("Wiki.authenticated")
 def facility_list_view(request):
@@ -103,7 +95,7 @@ def facility_list_view(request):
     all_cols = list(chunks(facility_list))
     length = range(0, len(all_cols[0]))
     lens = [len(all_cols[0]),len(all_cols[1]),len(all_cols[2]),len(all_cols[3])]
-    return render(request, 'facility/facility.html', context={'all_cols':all_cols, 'length':length, 'lens':lens})
+    return render(request, 'facility/facility_list.html', context={'all_cols':all_cols, 'length':length, 'lens':lens})
 
 @permission_required("Wiki.authenticated")
 def infotype_list_view(request):
@@ -111,7 +103,15 @@ def infotype_list_view(request):
     all_cols = list(chunks(infotype_list))
     length = range(0, len(all_cols[0]))
     lens = [len(all_cols[0]),len(all_cols[1]),len(all_cols[2]),len(all_cols[3])]
-    return render(request, 'infotype/infotype.html', context={'all_cols':all_cols, 'length':length, 'lens':lens})
+    return render(request, 'infotype/infotype_list.html', context={'all_cols':all_cols, 'length':length, 'lens':lens})
+
+@permission_required("Wiki.authenticated")
+def team_list_view(request):
+    team_list = Team.objects.all().order_by('team')
+    all_cols = list(chunks(team_list))
+    length = range(0, len(all_cols[0]))
+    lens = [len(all_cols[0]),len(all_cols[1]),len(all_cols[2]),len(all_cols[3])]
+    return render(request, 'team/team_list.html', context={'all_cols':all_cols, 'length':length, 'lens':lens})
 
 @permission_required("Wiki.edit_entry")
 def upload_dialog(request):
@@ -196,6 +196,10 @@ def search_bar_query(request):
     infotype = None 
     team = None
     advSearch = None
+
+    if query == '': 
+        return redirect(reverse('search'))
+
     if request.method == "POST":
         form = SearchForm(request.POST)
         if form.is_valid():
@@ -204,11 +208,12 @@ def search_bar_query(request):
             infotype = form.data['infoType']
             team = form.data['team']
             advSearch = form.data.get('advSearch', False)
-    
+
+
     entry_list = Entry.objects.all().order_by('topic')
     
-    query = split(query)
     if query:
+        query = split(query)
         if advSearch:
             key_query = Keyword.objects.filter(reduce(__or__, (Q(keyword__iexact=x) for x in query)))
             entry_list = (entry_list & ((Entry.objects.filter(keywords__in=key_query))
@@ -230,19 +235,15 @@ def search_bar_query(request):
     
     entry_list_temp = entry_list.none()
     
-    print(entry_list_temp)
-
     for g in request.user.groups.all():
         entry_list_temp = entry_list_temp | entry_list.filter(group__exact=g)
-        print(g)
-        print(entry_list_temp)
 
     entry_list = entry_list_temp
 
     all_cols = list(chunks(entry_list))
     length = range(0, len(all_cols[0]))
     lens = [len(all_cols[0]),len(all_cols[1]),len(all_cols[2]),len(all_cols[3])]
-    return render(request, 'search/search.html', context={'all_cols':all_cols, 'length':length, 'lens':lens, 'form':form})
+    return render(request, 'search/search.html', context={'all_cols':all_cols, 'length':length, 'lens':lens, 'form':form, 'isSearch':True})
     
 @permission_required("Wiki.view_entry")    
 def pdf_view(request, primary_key):

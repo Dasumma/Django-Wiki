@@ -1,25 +1,9 @@
 {% extends "../base_generic.html" %}
 
 {% load index %}
-{% block content %} 
-  <h1><strong>Results: </strong></h1>
-  <form method="POST" enctype="multipart/form-data">
-    <div class="d-flex">
-      {% csrf_token %}
-      {{ form.media }}
-      {{ form.facility }}
-      {{ form.infoType }}
-      {{ form.team }}
-      {{ form.search }}
-      <div class="form-group">
-          <button type="search" value="search" class="btn btn-outline-success">Search</button>
-      </div>
-    </div>
-    <div class="d-flex">
-      <div title="Use this to do a complete search of all the entries.">Advanced Search: {{ form.advSearch }}</div>
-    </div>
-  </form>
-</br>
+{% block content %}
+  <h2><strong>Team List</strong></h2>
+
   {% if all_cols.0 %}
     <ul>
       <table class="table">
@@ -28,7 +12,7 @@
         {% if i < lens.0 %}
         {% with top=all_cols.0|index:i %}
         <td>
-          <a href="{% url 'entry-detail' top.pk %}">{{ top }}</a>
+          <a href="{{ top.get_absolute_url }}">{{ top }}</a>
         </td>
         {% endwith %}
         {% else %}
@@ -38,7 +22,7 @@
         {% if i < lens.1 %}
         {% with top=all_cols.1|index:i %}
         <td>
-          <a href="{% url 'entry-detail' top.pk %}">{{ top }}</a>
+          <a href="{{ top.get_absolute_url }}">{{ top }}</a>
         </td>
         {% endwith %}
         {% else %}
@@ -48,7 +32,7 @@
         {% if i < lens.2 %}
         {% with top=all_cols.2|index:i %}
         <td>
-          <a href="{% url 'entry-detail' top.pk %}">{{ top }}</a>
+          <a href="{{ top.get_absolute_url }}">{{ top }}</a>
         </td>
         {% endwith %}
         {% else %}
@@ -58,7 +42,7 @@
         {% if i < lens.3 %}
         {% with top=all_cols.3|index:i %}
         <td>
-          <a href="{% url 'entry-detail' top.pk %}">{{ top }}</a>
+          <a href="{{ top.get_absolute_url }}">{{ top }}</a>
         </td>
         {% endwith %}
         {% else %}
@@ -69,6 +53,6 @@
     </table>
     </ul>
   {% else %}
-    <p>No entries matched your search terms.</p>
+    <p>There are no facilities in the Wiki.</p>
   {% endif %}
 {% endblock %}

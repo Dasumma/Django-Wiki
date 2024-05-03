@@ -5,47 +5,45 @@
 {{ all_info_types|index:x }}
 {% block content %}
   <h2>IT Knowledge Base</h2>
-  <p>
-    Welcome To The Enjet Aero IT Knowledge Base, a website developed by
-    <em>The Enjet Aero IT Team</em>!
-  </p>
+  <p style="padding-left:4em; width:90%;">
+    The Enjet Aero IT Knowledge Base is a database that contains information that was deemed important by the IT Team. The information is divided into multiple sections; 
+    <a href="{% url 'facility-list' %}">Facility</a>, 
+    <a href="{% url 'infotype-list' %}">Information</a>, and
+    <a href="{% url 'team-list' %}">Team</a>.
+
+    You can also <a href="{% url 'search' %}">Search</a> using the search bar on the top right. Inside the search page you have more filtering options to get a more accurate result.
+
+    <br/>
+    <br/>
+
+    If you have permission you can <a href="{% url 'upload' %}">upload</a> new entries and/or edit existing entries.
+
+    <br/>
+    <br/>
+
+    To learn more about this website you can look at its documentation which was uploaded <a href="{% url 'entry-detail' 10 %}">here</a>.
     
-  
-  <ul>
+
+
+    <br/>
+    <br/>
     <strong># Entries:</strong> {{ num_entries }}
-  </ul>
-  {{pop_entries.0}}
-  <br>
+  </p>
   <div class="col mx-auto">
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">Facilities</th>
-          <th scope="col">Info Type</th>
+          <th scope="col" >Frequently Viewed Articles</th>
         </tr>
       </thead>
       <tbody>
-        {% for i in larger_count %}
+        {% for i in faq_range %}
         <tr>
-          {% if i < num_facilities %}
-          {% with facility=all_facilities|index:i %}
+          {% with faq=faq_entries|index:i %}
           <td>
-            <a href="{% url 'facility-detail' facility.pk %}">{{ facility }}</a>
+            <a href="{% url 'facility-detail' faq.pk %}">{{ faq }}</a>
           </td>
           {% endwith %}
-          {% else %}
-          <td></td>
-          {% endif %}
-  
-          {% if i < num_info_types %}
-          {% with info_type=all_info_types|index:i %}
-          <td>
-            <a href="{% url 'infotype-detail' info_type.pk %}">{{ info_type }}</a>
-          </td>
-          {% endwith %}
-          {% else %}
-          <td></td>
-          {% endif %}
         </tr>
         {% endfor %}
       </tbody>
