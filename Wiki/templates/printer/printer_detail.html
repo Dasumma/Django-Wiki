@@ -19,7 +19,7 @@
   <body>
     <table class="table table-fixed">
         <tr>
-            <th scope="col" class="col-3">{{printer.0.0}} - {{printer_ip}}</th>
+            <th scope="col" class="col-3">{{printer_name}} - {{printer_ip}}</th>
             <th scope="col" class="col-3'">Level</th>
             <th scope="col" class="col-1'">Level %</th>
             <th scope="col" class="col-1'">Stock # <a class="link-primary pe-custom" onclick="window.open('{% url 'edit-toner' toner_key %}','name','width=600,height=400')">[Edit Toner Stock]</a></th>
@@ -31,7 +31,7 @@
                     <div class="progress-bar" role="progressbar" style="width: {{printer.0.2}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </td>
-            <td>{{printer.0.2}}%</td>
+            <td>{{printer.0.1}}%</td>
             <td>{{blackToner}}</td>
         </tr>
         <tr>
@@ -41,7 +41,7 @@
                     <div class="progress-bar" role="progressbar" style="width: {{printer.1.2}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </td>
-            <td>{{printer.1.2}}%</td>
+            <td>{{printer.1.1}}%</td>
             <td>{{cyanToner}}</td>
         </tr>
         <tr>
@@ -51,7 +51,7 @@
                     <div class="progress-bar" role="progressbar" style="width: {{printer.2.2}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </td>
-            <td>{{printer.2.2}}%</td>
+            <td>{{printer.2.1}}%</td>
             <td>{{magentaToner}}</td>
         </tr>
         <tr>
@@ -61,7 +61,7 @@
                     <div class="progress-bar" role="progressbar" style="width: {{printer.3.2}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </td>
-            <td>{{printer.3.2}}%</td>
+            <td>{{printer.3.1}}%</td>
             <td>{{yellowToner}}</td>
         </tr>
     </table>

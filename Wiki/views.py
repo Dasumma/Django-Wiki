@@ -20,8 +20,16 @@ def home(request):
     """View Function for home page of site."""
     num_entries = Entry.objects.all().count()
     
-    faq_entries = Entry.objects.all().order_by("impressions").reverse()
-    faq_range = range(0,15)
+    entry_list = Entry.objects.all().order_by("impressions").reverse()
+
+    faq_entries = Entry.objects.none()
+    for g in request.user.groups.all():
+        faq_entries = faq_entries | entry_list.filter(group__exact=g)
+
+    if faq_entries.__len__() < 15:
+        faq_range = range(0, faq_entries.__len__())
+    else:
+        faq_range = range(0,15)
 
     context = {
         'num_entries': num_entries,
@@ -299,14 +307,15 @@ def printer_dca_single_detail(request, primary_key):
     tonerQuantity = (Toner.objects.filter(facility=printer.facility) & Toner.objects.filter(model=printer.model)).first()
     info = get_printer_info(printer.IP)
     for oid, val in info:
-            printerInfo.append((printer.name, oid, val))
+            printerInfo.append((oid, val))
     return render(request, 'printer/printer_detail.html', {'printer':printerInfo, 
                                                                  'blackToner':tonerQuantity.black,
                                                                  'cyanToner':tonerQuantity.cyan,
                                                                  'yellowToner':tonerQuantity.yellow,
                                                                  'magentaToner':tonerQuantity.magenta,
                                                                  'toner_key':tonerQuantity.pk,
-                                                                 'printer_ip':printer.IP})
+                                                                 'printer_ip':printer.IP,
+                                                                 'printer_name':printer.name})
 
 @permission_required("Wiki.edit_toner")
 def printer_edit_toner(request, primary_key):

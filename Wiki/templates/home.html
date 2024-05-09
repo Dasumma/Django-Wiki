@@ -5,30 +5,21 @@
 {{ all_info_types|index:x }}
 {% block content %}
   <h2>IT Knowledge Base</h2>
-  <p style="padding-left:4em; width:90%;">
+  <br/>
+  <p style="width:90%; text-indent: 4em;">
     The Enjet Aero IT Knowledge Base is a database that contains information that was deemed important by the IT Team. The information is divided into multiple sections; 
     <a href="{% url 'facility-list' %}">Facility</a>, 
     <a href="{% url 'infotype-list' %}">Information</a>, and
     <a href="{% url 'team-list' %}">Team</a>.
-
     You can also <a href="{% url 'search' %}">Search</a> using the search bar on the top right. Inside the search page you have more filtering options to get a more accurate result.
-
-    <br/>
-    <br/>
-
-    If you have permission you can <a href="{% url 'upload' %}">upload</a> new entries and/or edit existing entries.
-
-    <br/>
-    <br/>
-
-    To learn more about this website you can look at its documentation which was uploaded <a href="{% url 'entry-detail' 10 %}">here</a>.
-    
-
-
-    <br/>
-    <br/>
-    <strong># Entries:</strong> {{ num_entries }}
   </p>
+  <p style="width:90%; text-indent: 4em;">
+    If you have permission you can <a href="{% url 'upload' %}">upload</a> new entries and/or edit existing entries.  
+  </p>
+  <p style="width:90%; text-indent: 4em;">
+    To learn more about this website you can look at its documentation which was uploaded <a href="{% url 'entry-detail' 70 %}">here</a>.
+  </p>
+  <strong># Entries:</strong> {{ num_entries }}
   <div class="col mx-auto">
     <table class="table">
       <thead>
@@ -41,7 +32,7 @@
         <tr>
           {% with faq=faq_entries|index:i %}
           <td>
-            <a href="{% url 'facility-detail' faq.pk %}">{{ faq }}</a>
+            <a href="{% url 'entry-detail' faq.pk %}">{{ faq }}</a>
           </td>
           {% endwith %}
         </tr>
